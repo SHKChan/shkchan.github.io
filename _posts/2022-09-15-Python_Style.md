@@ -2,7 +2,7 @@
 title: Python语言规范和风格规范
 author: SHKChan
 date: 2022-09-15
-category: Coding Conventions
+category: Code Convention
 layout: post
 ---
 参考[Google开源项目风格指南](https://zh-google-styleguide.readthedocs.io/en/latest/contents/),规范一下Python编程习惯,在这里记录一下本人认为较为重要的点,便于自己查阅.

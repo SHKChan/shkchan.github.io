@@ -2,25 +2,26 @@
 title: tinyTetris源码解读
 author: SHKChan
 date: 2022-09-19
-category: C++
+category: C++ / C
 layout: post
 ---
 在GitHub上看到一个简单的俄罗斯方块开源项目,这里记录一下对其源码的解读.
 Github地址:https://github.com/taylorconor/tinytetris
 
 - main函数
+
 ```
 int // 初值与变量最终用法无关,仅为方便打表
-	
+
 	 x = 431424,   // 方块x轴坐标
      y = 598356,   // 方块y轴坐标
      r = 427089,   // 某一种方块的具体那种形式 (同一个类别的方块可以经过旋转)
      px = 247872,  // 记录上一次的x 信息
-     py = 799248,  // 记录上一次的y 信息  
+     py = 799248,  // 记录上一次的y 信息
 	 pr,           // 记录上一次的r 信息
      c = 348480,   // 中间变量
      p = 615696,   // 记录方块的类别， 也记录了每种方块的颜色信息,颜色信息=p+1
-     
+
     tick,         // 控制帧率  控制下落的速度
     board[20][10], // 整个地图(画面),有无方块、方块的颜色信息
     // {h-1,w-1}{x0,y0}{x1,y1}{x2,y2}{x3,y3} (two bits each)
@@ -70,7 +71,6 @@ int main() {
   ******************************/
   int NUM(int x, int y) { return 3 & block[p][x] >> y; }
   ```
-
 - new_piece函数
 
   ```
@@ -79,13 +79,12 @@ int main() {
   *******************************/
   void new_piece() {
     y = py = 0;          // 新的块,重置y和py
-    p = rand() % 7;      // 块的类别是7种的随机一种                                                       
+    p = rand() % 7;      // 块的类别是7种的随机一种
     r = pr = rand() % 4; // 旋转类型也是四种的随机一种
     x = px = rand() % (10 - NUM(r, 16)); // 17,18位   x坐标是屏幕宽度-块的宽度之间的随机数
     // NUM(r, 16)获取方块的宽度
   }
   ```
-
 - frame函数
 
   ```
@@ -96,11 +95,11 @@ int main() {
     for (int i = 0; i < 20; i++) {
       move(1 + i, 1); // 到新的一行
       for (int j = 0; j < 10; j++) {
-        board[i][j] && attron(262176 | board[i][j] << 8); 
+        board[i][j] && attron(262176 | board[i][j] << 8);
   	  // 如果board[i][j]非0 则进行后面的语句
-  	  // board[i][j] << 8 等价于 COLOR_PAIR(board[i][j]) 
+  	  // board[i][j] << 8 等价于 COLOR_PAIR(board[i][j])
   	  // 262176实际上应为 262144 为 A_REVERSE  将前景色和背景色对换
-        printw("  "); 
+        printw("  ");
   	  // 上一句设置输出的颜色属性，下一句关闭设置的的颜色，为下次绘制做准备
         attroff(262176 | board[i][j] << 8);
       }
@@ -110,7 +109,6 @@ int main() {
     refresh(); // 立即更新显示（将实际屏幕与之前的绘制/删除方法进行同步）
   }
   ```
-
 - set_piece函数
 
   ```
@@ -130,7 +128,6 @@ int main() {
     }
   }
   ```
-
 - update_piece函数
 
   ```
@@ -142,7 +139,6 @@ int main() {
     set_piece(px = x, py = y, pr = r, p + 1);// ***块的类别加1为颜色信息***， x,y为当前的新位置,并更新px,py
   }
   ```
-
 - remove_line函数
 
   ```
@@ -163,11 +159,10 @@ int main() {
         // (out_write, in_read, value)
       }
       memset(&board[0][0], 0, 10); //将最顶行清空
-      score++; // 得分 
+      score++; // 得分
     }
   }
   ```
-
 - check_hit函数
 
   ```
@@ -183,14 +178,13 @@ int main() {
     set_piece(px, py, pr, 0);// 清空当前方块，清除自己的影响
     c = 0;
     for (int i = 0; i < 8; i += 2) {
-      board[y + NUM(r, i * 2)][x + NUM(r, (i * 2) + 2)] && c++; 
+      board[y + NUM(r, i * 2)][x + NUM(r, (i * 2) + 2)] && c++;
   	// 判断本方块要放置的四个位置 是否已经有了别的方块
     }
     set_piece(px, py, pr, p + 1);// 在原位置重新放置
     return c; // 如果c == 0 表示可以放置
   }
   ```
-
 - do_tick函数
 
   ```
@@ -201,24 +195,23 @@ int main() {
   int   do_tick() {
     if (++tick > 30) {
       tick = 0;
-      if (check_hit(x, y + 1, r)) {   
+      if (check_hit(x, y + 1, r)) {
   	  // 不能放置到下一行
         if (!y) {  // y == 0 游戏结束
           return 0;
         }
         remove_line(); // 判断是否已经满了
         new_piece(); // 在开头创建新的块
-      } 
+      }
       else {
   	  // 可以放置到下一行
-        y++;  
+        y++;
         update_piece();
       }
     }
     return 1;
   }
   ```
-
 - runloop函数
 
   ```
@@ -262,5 +255,3 @@ int main() {
     }
   }
   ```
-
-  

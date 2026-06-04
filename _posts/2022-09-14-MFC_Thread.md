@@ -2,7 +2,7 @@
 title: MFC 多线程教程
 author: SHKChan
 date: 2022-09-14
-category: C++
+category: C++ / C
 layout: post
 ---
 记录一下最近编程过程中, 需要要到的MFC简单多线程教程, 以搬运原文和附上修改后的例子为主.
@@ -73,19 +73,19 @@ CITTDlg *pWnd = (CITTDlg *)lParam;         //将窗口指针赋给无类型指�
 pWnd->KMeansSegment();                         //要执行的函数
 return 1;
 }
- 
+
  //真正的数据或任务处理函数
 void CITTDlg::KMeansSegment()
 {
 // 主要处理函数在这里写
 }
- 
+
  //响应用户界面，开辟线程，执行相关后台任务
 void CITTDlg::OnKMeansSegment()             //按钮点击执行
 {
- 
+
 AfxBeginThread(myproc, (LPVOID)this);//启动新的线程
- 
+
 }
 ```
 
