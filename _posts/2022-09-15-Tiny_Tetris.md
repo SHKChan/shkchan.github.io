@@ -2,7 +2,7 @@
 title: tinyTetris源码解读
 author: SHKChan
 date: 2022-09-19
-category: C++ / C
+category: C++/C
 layout: post
 ---
 在GitHub上看到一个简单的俄罗斯方块开源项目,这里记录一下对其源码的解读.

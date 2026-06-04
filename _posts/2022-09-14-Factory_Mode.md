@@ -2,7 +2,7 @@
 title: 工厂模式
 author: SHKChan
 date: 2022-09-14
-category: Code Convention
+category: Code_Convention
 layout: post
 ---
 &emsp;&emsp;开发需要, 学习一下工厂模式, 以便规范自己的代码, 便于维护. 刚开始写自己的博客, 技术不精, 内容目前主要都以直接搬运并附上少量改动为主. 参考博客以Java进行举例, 和C++稍有不同, 本文中我尝试用C++进行举例(以调用不同型号的通用激光API为例), 更加便于自己理解, 目前仅解读简单工厂模式, 另外两种模式暂时未能用上.
